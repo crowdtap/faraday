@@ -71,8 +71,32 @@ module Faraday
       return self
     end
 
+    def informational?
+      (100..199).include?(status)
+    end
+
     def success?
       (200..299).include?(status)
+    end
+
+    def redirect?
+      (300..399).include?(status)
+    end
+
+    def client_error?
+      (400..499).include?(status)
+    end
+
+    def server_error?
+      (500..599).include?(status)
+    end
+
+    def successish?
+      success? || redirect?
+    end
+
+    def failureish?
+      client_error? || server_error?
     end
 
     # because @on_complete_callbacks cannot be marshalled
